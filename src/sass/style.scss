@@ -1,0 +1,94 @@
+@import "./variables.scss";
+@import "./mixins.scss";
+
+/* blocks import */
+// @import "./blocks/round-level.scss";
+// @import "./blocks/logo.scss";
+// @import "./blocks/line-break.scss";
+// @import "./blocks/nav.scss";
+// @import "./blocks/tooltip-wrapper.scss";
+// @import "./blocks/soc-links.scss";
+// @import "./blocks/top-bar.scss";
+// @import "./blocks/mobile-menu.scss";
+// @import "./blocks/link-btn.scss";
+// @import "./blocks/contacts-paragraph.scss";
+// @import "./blocks/interaction-buttons.scss";
+// @import "./blocks/interaction-button.scss";
+// @import "./blocks/review.scss";
+// @import "./blocks/how-use.scss";
+// @import "./blocks/section-wrapper.scss";
+// @import "./blocks/country-card.scss";
+// @import "./blocks/user-card.scss";
+// @import "./blocks/add-profile.scss";
+// @import "./blocks/CTA-form.scss";
+// @import "./blocks/address.scss";
+// @import "./blocks/map.scss";
+// @import "./blocks/modal.scss";
+// @import "./blocks/companions.scss";
+// @import "./blocks/user-card-filter.scss";
+// @import "./blocks/companions-filter.scss";
+// @import "./blocks/want-visit.scss";
+// @import "./blocks/slide-controller.scss";
+// @import "./blocks/companions-country-filter.scss";
+// @import "./blocks/country-picker.scss";
+// @import "./blocks/country-picker-bar.scss";
+// @import "./blocks/accordion.scss";
+// @import "./blocks/profile-settings.scss";
+// @import "./blocks/fieldset.scss";
+// @import "./blocks/profile-plans.scss";
+// @import "./blocks/profile-add-plan.scss";
+// @import "./blocks/profile-step.scss";
+// @import "./blocks/smart-counter.scss";
+// @import "./blocks/text-slider.scss";
+// @import "./blocks/calendar.scss";
+// @import "./blocks/country-selector.scss";
+// @import "./blocks/country-entertainment.scss";
+// // position blocks
+// @import "./blocks/page-header.scss";
+// @import "./blocks/page-body.scss";
+// @import "./blocks/page-main.scss";
+// @import "./blocks/page-footer.scss";
+
+/* global styles */
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: $text-color;
+  font: 400 15px/30px $font-family;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+a {
+  color: inherit;
+
+  text-decoration: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/**
+*  Service Classes
+*/
+
+.visually-hidden {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+
+  clip: rect(0 0 0 0);
+}

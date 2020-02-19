@@ -1,0 +1,34 @@
+$yellow-base:   #ffd74b;
+
+$blue-nav-text: #192144;
+$blue-darken:   #161c35;
+$blue-base:     #1d2e5b;
+
+$text-color:    #444444;
+
+$orange-text:   #ff8d30;
+
+$blue-chrome-hover-color:   #4d90fe;
+
+$font-family: "Arial", "Tahoma", sans-serif;
+
+$mobile-width:  320px;
+$mobile-width-max:  767px;
+$tablet-width:  768px;
+$tablet-width-max:  1439px;
+$desktop-width: 1440px;
+$desktop-content-max-width: 1320px;
+
+$mobile-top-bar-height:  58px;
+$tablet-top-bar-height:  132px;
+$desktop-top-bar-height: 100px;
+
+$retina-dpi: 144dpi;
+$retina-dppx: 1.5dppx;
+
+$media-tablet-more:   "screen and (min-width:" + $tablet-width + ")";
+$media-desktop-more:  "screen and (min-width:" + $desktop-width + ")";
+$media-tablet-less:   "screen and (max-width:" + $mobile-width-max + ")";
+$media-desktop-less:  "screen and (max-width:" + $tablet-width-max + ")";
+
+$media-between-tablet-desktop:   "screen and (min-width:" + $tablet-width + ") and (max-width:" + $tablet-width-max + ")";
