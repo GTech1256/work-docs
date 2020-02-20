@@ -16,7 +16,7 @@ var csso = require("gulp-csso");
 var rename = require("gulp-rename");
 var del = require("del");
 var htmlmin = require("gulp-htmlmin");
-// var uglify = require('gulp-uglify');
+var terser = require('gulp-terser');
 var historyApiFallback = require('connect-history-api-fallback');
 
 gulp.task("css", function () {
@@ -83,6 +83,7 @@ gulp.task("js", function () {
   .pipe(source('app.min.js'))
   .pipe(buffer())
   .pipe(sourcemaps.init({loadMaps: true}))
+  .pipe(terser())
   .pipe(sourcemaps.write('./'))
   .pipe(gulp.dest('dist/js'));
 })

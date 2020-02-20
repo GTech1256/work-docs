@@ -52,6 +52,8 @@ export default class DocumentPresenter {
   }
 
   render() {
+    console.log("RENDER");
+
     // const container = this._container.getElement();
     // const tasks = this._graphsModel.getTasks();
     // const isAllTasksArchived = tasks.every((task) => task.isArchive);
