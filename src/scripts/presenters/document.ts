@@ -1,16 +1,11 @@
-// import LoadMoreButtonComponent from '../components/load-more-button';
-// import TasksComponent from '../components/tasks';
 import GraphModel, { GraphPosition } from '../models/graph';
-// import SortComponent, {SortType} from '../components/sort';
-// import NoTasksComponent from '../components/no-tasks';
-// import {render, remove, RenderPosition} from '../utils/render';
-// import TaskController, {Mode as TaskControllerMode, EmptyTask} from './task';
 import DocumentComponent, { CLASS_NAME } from '../components/document/document';
 import DocumentTableEdgesComponent from '../components/document/document-table-edges/document-table-edges';
 import DocumentTableVertexComponent from '../components/document/document-table-vertex/document-table-vertex';
 import DocumentCanvasEdgesComponent from '../components/document-canvas-edges/document-canvas-edges';
 import { render, remove } from '../utils/render';
 import AbstractComponent from '../components/common/abstract-component';
+import getStore from '../store/index';
 
 
 export enum TableShow {
@@ -52,12 +47,15 @@ export default class DocumentPresenter {
   render() {
     const isDocumentEmpty = this._graphModel.getVertex().length === 0
     this._documentComponent = new DocumentComponent(isDocumentEmpty);
-    this._documentComponent.setOnAddVertex(this.handleVertexAdd)
+    this._documentComponent.setHandlerOnAddVertex(this.handleVertexAdd)
+    this._documentComponent.setHandlerOonSave(() => {
+      getStore().save()
+    })
 
     render(this._container.getElement(), this._documentComponent);
 
     if (!isDocumentEmpty) {
-      this._documentComponent.setOnChangeViewType(this.changeTableView)
+      this._documentComponent.setHandlerOnChangeViewType(this.changeTableView)
 
       const canvasSideElement = this._documentComponent
         .getElement()
@@ -75,8 +73,8 @@ export default class DocumentPresenter {
         throw new Error("DOMNode с классом .canvas не найдена")
       }
 
-
-      render(canvasSideElement, new DocumentCanvasEdgesComponent(this._graphModel))
+      this._documentCanavsComponent = new DocumentCanvasEdgesComponent(this._graphModel);
+      render(canvasSideElement, this._documentCanavsComponent)
 
       // создает и рендерит таблицу с ребрами
       this._documentTableEdgesComponent = new DocumentTableEdgesComponent(this._graphModel)

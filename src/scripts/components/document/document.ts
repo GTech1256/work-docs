@@ -34,6 +34,11 @@ const getCanvasTemplate = () => `
 <div class="canvas">
 </div>
 `
+const getSaveTemplate = () => `
+<button class="save-btn">
+  Сохранить граф
+</button>
+`
 
 const getNonEmptyTemplate = () => `
 
@@ -44,6 +49,7 @@ ${getCanvasTemplate()}
 const createTemplate = (isEmpty: boolean) => {
   return (
     `<article class="${CLASS_NAME}">
+      ${getSaveTemplate()}
       ${getFormTemplate()}
       ${isEmpty ? emptyTemplate : getNonEmptyTemplate()}
     </article>`
@@ -64,7 +70,17 @@ export default class DocumentComponent extends AbstractComponent {
     return createTemplate(this._isEmpty);
   }
 
-  setOnChangeViewType(handler: (value: TableShow) => void) {
+  setHandlerOonSave(handler: () => void) {
+    const saveBtn = this.getElement().querySelector(".save-btn");
+
+    if (!saveBtn) {
+      throw new Error("Элемента .save-btn в документе не найдено")
+    }
+
+    saveBtn.addEventListener(`click`, handler)
+  }
+
+  setHandlerOnChangeViewType(handler: (value: TableShow) => void) {
     this.getElement().addEventListener(`click`, (evt: MouseEvent) => {
       const target = evt.target as HTMLInputElement;
 
@@ -76,7 +92,7 @@ export default class DocumentComponent extends AbstractComponent {
     })
   }
 
-  setOnAddVertex(handler: (vertexName: string, position: GraphPosition) => void) {
+  setHandlerOnAddVertex(handler: (vertexName: string, position: GraphPosition) => void) {
     const form = this.getElement()
       .querySelector('form')
 

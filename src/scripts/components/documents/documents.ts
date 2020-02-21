@@ -5,7 +5,7 @@ const createTemplate = (graphs: GraphsModel) => {
   return (
     `<ul>
       ${graphs.getGraphs().map(it => `<li><button data-id="${it.id}">${it.id}</button></li>`).join('')}
-      <li><button>Добавить документ</button></li>
+      <li><button>Создать новый</button></li>
     </ul>`
   );
 };

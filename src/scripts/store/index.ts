@@ -47,23 +47,23 @@ class Store {
       }
     }
 
-    this._storage.setItem(
-        this._storeKey,
-        JSON.stringify(this._store)
-    );
+    // this._storage.setItem(
+    //     this._storeKey,
+    //     JSON.stringify(this._store)
+    // );
   }
 
   removeItem(id: string) {
     if (this._store[id]) {
       delete this._store[id]
-      this._save();
+      this.save();
       return true
     }
 
     throw `Обьекта с ${id} не найдено для удаления`
   }
 
-  private _save() {
+  save() {
     this._storage.setItem(
       this._storeKey,
       JSON.stringify(
