@@ -1,6 +1,7 @@
 "use strict";
 
 var gulp = require("gulp");
+var bulkSass = require('gulp-sass-bulk-import');
 var plumber = require("gulp-plumber");
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -21,6 +22,7 @@ var historyApiFallback = require('connect-history-api-fallback');
 
 gulp.task("css", function () {
   return gulp.src("src/sass/style.scss")
+    .pipe(bulkSass())
     .pipe(plumber())
     .pipe(sourcemap.init())
     .pipe(sass())
