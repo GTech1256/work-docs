@@ -11,7 +11,12 @@ const graphsRaw = store.getAll();
 
 const graphs = {} as GraphsType;
 
-Object.values(graphsRaw).map((graph) => { graphs[graph.id] = new GraphModel(graph)})
+Object.values(graphsRaw).map((graph) => {
+  graphs[graph.id] = new GraphModel({
+    id: graph.id,
+    adjList: new Map(graph.adjList)
+  })
+})
 
 const graphsModel = new GraphsModel(graphs);
 

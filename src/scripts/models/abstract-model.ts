@@ -1,6 +1,6 @@
 type cb = () => void;
 
-export default class AbstractModel {
+export default abstract class AbstractModel {
   private _dataChangeHandlers: cb[];
 
   constructor() {

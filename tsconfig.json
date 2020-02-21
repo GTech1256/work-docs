@@ -3,6 +3,7 @@
       "./src/scripts/app.ts"
   ],
   "compilerOptions": {
+    "strictNullChecks": true,
     "noImplicitAny": true,
     "target": "es2015"
   }

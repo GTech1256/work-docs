@@ -5,15 +5,13 @@ const createTemplate = (graphs: GraphModel) => {
   return (
     `<table>
       <thead>
-        <th>name</th>
-        <th>X</th>
-        <th>Y</th>
+        <th>Connected edge</th>
       </thead>
       <tbody>
-        ${graphs.getEdges().map(it => `
+        ${graphs.getEdges().map(({connectedEdges}) => connectedEdges.map(edge => `
         <tr>
-          <td>${it}</td>
-        </tr>`)
+          <td>${edge}</td>
+        </tr>`))
         .join('')}
       </tbody>
     </table>`

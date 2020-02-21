@@ -3,22 +3,13 @@ import GraphModel from "../models/graph"
 
 const createTemplate = (graphs: GraphModel) => {
   return (
-    `<table>
-      <thead>
-        <th>name</th>
-        <th>X</th>
-        <th>Y</th>
-      </thead>
-      <tbody>
-        ${graphs.getAll().map(([name, { position}]) => `
-        <tr>
-          <td>${name}</td>
-          <td>${position[0]}</td>
-          <td>${position[1]}</td>
-        </tr>`)
-        .join('')}
-      </tbody>
-    </table>`
+    `<ul>
+      ${graphs.getVertex().map(it => `
+      <li>
+        ${it}
+      </li>`)
+      .join('')}
+    </ul>`
   );
 };
 

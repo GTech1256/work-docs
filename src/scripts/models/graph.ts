@@ -1,49 +1,67 @@
 /** https://repl.it/@ziyoshams/Graph-JS */
 import AbstractModel from "./abstract-model";
 
-export type GraphType = Map<string, string[]>
+export type GraphPosition = [number, number]
+
+export type GraphValueType = { connectedEdges: string[], position: GraphPosition }
+export type GraphKeyType = string
+export type GraphRawType = [string, GraphValueType][]
+export type GraphType = Map<GraphKeyType, GraphValueType>
 
 export type IGraphModel = {
   id: string
-  AdjList?: GraphType
+  adjList?: GraphType
 }
 
-type VisitedObject = Record<string, boolean>
+type VisitedObject = Record<GraphKeyType, boolean>
 
 export default class GraphModel extends AbstractModel {
   id: string;
-  AdjList: GraphType;
+  private _adjList: GraphType;
 
-  constructor({ id, AdjList = new Map() }: IGraphModel) {
+  constructor({ id, adjList = new Map() }: IGraphModel) {
     super()
 
     this.id = id
-    this.AdjList = AdjList
+    this._adjList = adjList
   }
 
-  addVertex(vertex: string) {
-    if (!this.AdjList.has(vertex)) {
-      this.AdjList.set(vertex, []);
-      this._callDataChangeHandlers();
-    } else {
-      throw `Вершина ${vertex} уже существует`;
+  get raw() {
+    return {
+      id: this.id,
+      adjList: this._adjList
     }
+  }
+
+  getAll() {
+    return Array.from(this._adjList)
+  }
+
+  addVertex(vertex: string, position: GraphPosition) {
+    if (this._adjList.has(vertex)) {
+      throw `Вершина с именем "${vertex}" уже существует`;
+
+    }
+
+    this._adjList.set(vertex, { connectedEdges: [], position});
+    this._callDataChangeHandlers();
   }
 
   getVertex() {
-    return Array.from(this.AdjList.keys())
+    return Array.from(this._adjList.keys())
   }
 
   addEdge(vertexFrom: string, vertexTo: string) {
-    if (!this.AdjList.has(vertexFrom)) {
+    if (!this._adjList.has(vertexFrom)) {
       throw `Вершина ${vertexFrom} не найдена`;
     }
 
-    if (!this.AdjList.has(vertexTo)){
+    if (!this._adjList.has(vertexTo)){
       throw `Вершина ${vertexTo} не найдена`;
     }
 
-    let edgedVertexs = this.AdjList.get(vertexFrom);
+    const graphDataType = this._adjList.get(vertexFrom) as GraphValueType;
+    let edgedVertexs = graphDataType.connectedEdges;
 
     if(!edgedVertexs.includes(vertexTo)) {
       edgedVertexs.push(vertexTo);
@@ -54,12 +72,12 @@ export default class GraphModel extends AbstractModel {
   }
 
   getEdges() {
-    return Array.from(this.AdjList.values())
+    return Array.from(this._adjList.values())
   }
 
 
   print() {
-    for (let [key, value] of Array.from(this.AdjList)) {
+    for (let [key, value] of Array.from(this._adjList)) {
       console.log(key, value);
     }
   }
@@ -67,7 +85,7 @@ export default class GraphModel extends AbstractModel {
   createVisitedObject(){
     let arr: Record<string, boolean> = {};
 
-    for(let key of Array.from(this.AdjList.keys())){
+    for(let key of Array.from(this._adjList.keys())){
       arr[key] = false;
     }
 
@@ -85,10 +103,10 @@ export default class GraphModel extends AbstractModel {
     q.push(startingNode);
 
     while(q.length){
-      let current = q.pop()
-      let arr = this.AdjList.get(current);
+      let current = q.pop() as string
+      let arr = this._adjList.get(current) as GraphValueType;
 
-      for(let elem of arr){
+      for(let elem of arr.connectedEdges){
         if(!visited[elem]){
           visited[elem] = true;
           q.unshift(elem)
@@ -109,9 +127,9 @@ export default class GraphModel extends AbstractModel {
   dfsHelper(startingNode: string, visited: VisitedObject){
     visited[startingNode] = true;
 
-    let arr = this.AdjList.get(startingNode);
+    let arr = this._adjList.get(startingNode) as GraphValueType;
 
-    for(let elem of arr){
+    for(let elem of arr.connectedEdges){
       if(!visited[elem]){
         this.dfsHelper(elem, visited);
       }
@@ -127,9 +145,11 @@ export default class GraphModel extends AbstractModel {
     q.push(firstNode);
 
     while (q.length) {
-      let node = q.pop();
+      let node = q.pop() as string;
       path.push(node);
-      let elements = this.AdjList.get(node);
+      const graphDataType = this._adjList.get(node) as GraphValueType;
+
+      let elements = graphDataType.connectedEdges
 
       if (elements.includes(secondNode)) {
         console.log(path.join('->'))

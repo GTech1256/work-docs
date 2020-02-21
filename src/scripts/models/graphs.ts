@@ -13,6 +13,13 @@ export default class GraphsModel extends AbstractModel {
 
     this._store = getStore();
     this._graphs = graphs
+
+    Object.values(this._graphs)
+      .forEach(it => {
+        it.setDataChangeHandler(() => {
+          this.updateGraph(it.id, it)
+        })
+      })
   }
 
   getGraphs() {
@@ -46,13 +53,14 @@ export default class GraphsModel extends AbstractModel {
   }
 
   updateGraph(id: string, graph: GraphModel) {
-    if (this._graphs[id]) {
+    if (!this._graphs[id]) {
       return false;
     }
 
     this._graphs = { ...this._graphs, [id]: graph };
 
-    this._callDataChangeHandlers()
+    // this._callDataChangeHandlers()
+    this._store.setItem(graph.id, graph)
 
     return true;
   }

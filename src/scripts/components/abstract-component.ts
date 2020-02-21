@@ -3,11 +3,11 @@ import {IStore} from "../store/index";
 
 const HIDDEN_CLASS = `visually-hidden`;
 
-export default class AbstractComponent {
+export default abstract class AbstractComponent {
   private _element: null | HTMLElement = null;
   private _store: null | IStore = null;
 
-  constructor(store: IStore = null) {
+  constructor(store: null | IStore = null) {
     if (new.target === AbstractComponent) {
       throw new Error(`Can't instantiate AbstractComponent, only concrete one.`);
     }
@@ -23,13 +23,11 @@ export default class AbstractComponent {
     return this._store;
   }
 
-  getTemplate() {
-    throw new Error(`Abstract method not implemented: getTemplate`);
-  }
+  abstract getTemplate(): string;
 
   getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate() as unknown as string);
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;

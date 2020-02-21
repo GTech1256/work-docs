@@ -35,7 +35,7 @@ export const replace = (newComponent: AbstractComponent, oldComponent: AbstractC
 
   const isExistElements = !!(parentElement && newElement && oldElement);
 
-  if (isExistElements && parentElement.contains(oldElement)) {
+  if (isExistElements && parentElement && parentElement.contains(oldElement)) {
     parentElement.replaceChild(newElement, oldElement);
   }
 };

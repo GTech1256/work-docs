@@ -1,17 +1,18 @@
 import { GraphsType } from "../models/graphs";
+import GraphModel, { GraphType, GraphRawType } from "../models/graph";
 
 const STORE_PREFIX = `taskmanager-localstorage`;
 const STORE_VER = `v1`;
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
-type IStoreData = GraphsType
+type IStoreRawData = Record<string, {id: string, adjList?: GraphRawType }>
 
 export type IStore = typeof Store;
 export type StoreType = Store;
 
 class Store {
   private _storage: Storage;
-  private _store: IStoreData;
+  private _store: IStoreRawData;
   private _storeKey: string;
 
   constructor(key: string, storage: Storage) {
@@ -19,7 +20,14 @@ class Store {
     this._storeKey = key;
 
     try {
-      this._store = JSON.parse(this._storage.getItem(this._storeKey)) as IStoreData | null || {};
+      const storeString = this._storage.getItem(this._storeKey) || "{}"
+      const storeRaw = JSON.parse(storeString) as IStoreRawData;
+
+      const store = {} as IStoreRawData
+      Object.entries(storeRaw).forEach(([id, graphRaw]) => {
+        store[id] = {id: graphRaw.id, adjList: graphRaw.adjList } ;
+      })
+      this._store = store
     } catch (err) {
       this._store = {}
     }
@@ -29,14 +37,19 @@ class Store {
     return { ...this._store };
   }
 
-  setItem(key: string, value: any) {
-    const store = this.getAll();
+  setItem(key: string, value: GraphModel) {
+    const rawValue = value.raw
+    this._store = {
+      ...this._store,
+      [key]: {
+        id: rawValue.id,
+        adjList: Array.from(rawValue.adjList)
+      }
+    }
 
     this._storage.setItem(
         this._storeKey,
-        JSON.stringify(
-            Object.assign({}, store, {[key]: value})
-        )
+        JSON.stringify(this._store)
     );
   }
 
