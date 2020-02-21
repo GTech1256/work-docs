@@ -5,24 +5,13 @@ import GraphModel, { GraphPosition } from '../models/graph';
 // import NoTasksComponent from '../components/no-tasks';
 // import {render, remove, RenderPosition} from '../utils/render';
 // import TaskController, {Mode as TaskControllerMode, EmptyTask} from './task';
-import DocumentComponent, { CLASS_NAME } from '../components/document';
-import DocumentTableEdges from '../components/document-table-edges';
-import DocumentTableVertex from '../components/document-table-vertex';
-import DocumentCanvasEdges from '../components/document-canvas-edges';
+import DocumentComponent, { CLASS_NAME } from '../components/document/document';
+import DocumentTableEdgesComponent from '../components/document/document-table-edges/document-table-edges';
+import DocumentTableVertexComponent from '../components/document/document-table-vertex/document-table-vertex';
+import DocumentCanvasEdgesComponent from '../components/document-canvas-edges/document-canvas-edges';
 import { render, remove } from '../utils/render';
-import AbstractComponent from '../components/abstract-component';
+import AbstractComponent from '../components/common/abstract-component';
 
-const SHOWING_TASKS_COUNT_ON_START = 8;
-const SHOWING_TASKS_COUNT_BY_BUTTON = 8;
-
-// const renderGraphs = (taskListElement, tasks, onDataChange, onViewChange) => {
-//   return tasks.map((task) => {
-//     const taskController = new TaskController(taskListElement, onDataChange, onViewChange);
-//     taskController.render(task, TaskControllerMode.DEFAULT);
-
-//     return taskController;
-//   });
-// };
 
 export enum TableShow {
   EDGES = "edges",
@@ -33,12 +22,13 @@ export default class DocumentPresenter {
   private _container: AbstractComponent;
 
   private _graphModel: GraphModel;
-  private _documentComponent: DocumentComponent;
 
   private _currentTableView: TableShow = TableShow.VERTEX;
 
-  private _documentTableEdges: DocumentTableEdges;
-  private _documentTableVertex: DocumentTableVertex;
+  private _documentComponent: DocumentComponent;
+  private _documentTableEdgesComponent: DocumentTableEdgesComponent;
+  private _documentTableVertexComponent: DocumentTableVertexComponent;
+  private _documentCanavsComponent: DocumentCanvasEdgesComponent;
 
   constructor(container: AbstractComponent, graph: GraphModel) {
     this.changeTableView = this.changeTableView.bind(this);
@@ -69,6 +59,10 @@ export default class DocumentPresenter {
     if (!isDocumentEmpty) {
       this._documentComponent.setOnChangeViewType(this.changeTableView)
 
+      const canvasSideElement = this._documentComponent
+        .getElement()
+        .querySelector('.canvas') as HTMLElement | null
+
       const tableSideElement = this._documentComponent
         .getElement()
         .querySelector('.table') as HTMLElement | null
@@ -77,15 +71,22 @@ export default class DocumentPresenter {
         throw new Error("DOMNode с классом .table не найдена")
       }
 
+      if (!canvasSideElement) {
+        throw new Error("DOMNode с классом .canvas не найдена")
+      }
+
+
+      render(canvasSideElement, new DocumentCanvasEdgesComponent(this._graphModel))
+
       // создает и рендерит таблицу с ребрами
-      this._documentTableEdges = new DocumentTableEdges(this._graphModel)
-      render(tableSideElement, this._documentTableEdges);
-      this._documentTableEdges.hide()
+      this._documentTableEdgesComponent = new DocumentTableEdgesComponent(this._graphModel)
+      render(tableSideElement, this._documentTableEdgesComponent);
+      this._documentTableEdgesComponent.hide()
 
       // создает и рендерит таблицу с вершинами
-      this._documentTableVertex = new DocumentTableVertex(this._graphModel)
-      render(tableSideElement, this._documentTableVertex);
-      this._documentTableVertex.hide()
+      this._documentTableVertexComponent = new DocumentTableVertexComponent(this._graphModel)
+      render(tableSideElement, this._documentTableVertexComponent);
+      this._documentTableVertexComponent.hide()
 
       // отображает нужную таблицу
       this.changeTableView(this._currentTableView)
@@ -105,13 +106,13 @@ export default class DocumentPresenter {
     this._currentTableView = view;
 
     if (this._currentTableView === TableShow.EDGES) {
-      this._documentTableEdges.show()
-      this._documentTableVertex.hide()
+      this._documentTableEdgesComponent.show()
+      this._documentTableVertexComponent.hide()
       return;
     }
 
-    this._documentTableEdges.hide()
-    this._documentTableVertex.show()
+    this._documentTableEdgesComponent.hide()
+    this._documentTableVertexComponent.show()
   }
 
   private handleVertexAdd (vertexName: string, position: GraphPosition) {

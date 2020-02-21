@@ -1,8 +1,8 @@
 import {render, remove} from '../utils/render';
 import GraphsModel from '../models/graphs';
-import AbstractComponent from '../components/abstract-component';
-import DocumentsComponent from '../components/documents';
-import DocumentComponent from '../components/document';
+import AbstractComponent from '../components/common/abstract-component';
+import DocumentsComponent from '../components/documents/documents';
+import DocumentComponent from '../components/document/document';
 import DocumentPresenter from './document';
 import GraphModel from '../models/graph';
 

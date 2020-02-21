@@ -1,4 +1,4 @@
-import AbstractComponent from "../components/abstract-component";
+import AbstractComponent from "../components/common/abstract-component";
 
 export enum RenderPosition {
   AFTERBEGIN = 'afterbegin',

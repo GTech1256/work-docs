@@ -1,5 +1,5 @@
-import AbstractComponent from './abstract-component';
-import GraphsModel from '../models/graphs';
+import AbstractComponent from '../common/abstract-component';
+import GraphsModel from '../../models/graphs';
 
 const createTemplate = (graphs: GraphsModel) => {
   return (

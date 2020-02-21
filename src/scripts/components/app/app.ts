@@ -1,4 +1,4 @@
-import AbstractComponent from './abstract-component';
+import AbstractComponent from '../common/abstract-component';
 
 const createTemplate = () => {
   return (

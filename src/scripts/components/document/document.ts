@@ -1,6 +1,6 @@
-import AbstractComponent from './abstract-component';
-import {TableShow} from "../presenters/document";
-import { GraphPosition } from '../models/graph';
+import AbstractComponent from '../common/abstract-component';
+import {TableShow} from "../../presenters/document";
+import { GraphPosition } from '../../models/graph';
 
 const textareaVertexName = 'vertex'
 const tableInputVertexName = 'view'

@@ -1,4 +1,4 @@
-import AppComponent from "./components/app";
+import AppComponent from "./components/app/app";
 import GraphsModel, { GraphsType } from './models/graphs';
 import GraphModel from './models/graph';
 import AppPresenter from './presenters/app';

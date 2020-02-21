@@ -1,5 +1,5 @@
-import {createElement} from '../utils/render';
-import {IStore} from "../store/index";
+import {createElement} from '../../utils/render';
+import {IStore} from "../../store/index";
 
 const HIDDEN_CLASS = `visually-hidden`;
 
